@@ -17,4 +17,8 @@
     5. 5人以下でランキング
 3. ユーザ追加のGUI実装
 
+## AWS構成図
+
+* [draw.io](https://app.diagrams.net/)で構成図を書く
+
 
