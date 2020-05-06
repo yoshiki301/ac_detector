@@ -62,6 +62,23 @@ def insert_new_ac(db, new_ac):
         """ % (row_id, submisson[0], submisson[1], submisson[2])
         db.db_manipulate(query=query, commit=True)
 
+def resister_user(db, user_id):
+    query = """
+        SELECT
+            count(*)
+        FROM
+            resister_user
+    """
+    row_id = db.db_manipulate(query=query, fetch=True)[0][0] + 1
+    query="""
+        INSERT INTO
+            resister_user (id, user_id)
+        VALUSE(
+            %d, '%s'
+        )
+    """ % (row_id, user_id)
+    db.db_manipulate(query=query, commit=True)
+
 if __name__ == "__main__":
     db = db_manager.sqlite3manager()
     db.db_create()
