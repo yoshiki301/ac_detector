@@ -55,11 +55,11 @@ def insert_new_ac(db, new_ac):
         row_id += 1
         query = """
             INSERT INTO
-                ac_submisson
+                ac_submisson (id, problem_id, user_id, language)
             VALUES(
-                %s, %s, %s, %s
+                %d, '%s', '%s', '%s'
             )
-        """ % (row_id, submisson[0], submisson[1], "None") # language
+        """ % (row_id, submisson[0], submisson[1], submisson[2])
         db.db_manipulate(query=query, commit=True)
 
 if __name__ == "__main__":
