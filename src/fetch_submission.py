@@ -37,7 +37,7 @@ def detect_new_ac(db, ac_submissions):
             user_id,
             language
         FROM
-            ac_submisson
+            ac_submission
     """
     res = set(db.db_manipulate(query=query, fetch=True))
     new_ac = ac_submissions - res
@@ -48,14 +48,14 @@ def insert_new_ac(db, new_ac):
         SELECT
             count(*)
         FROM
-            ac_submisson
+            ac_submission
     """
     row_id = db.db_manipulate(query=query, fetch=True)[0][0]
     for submisson in new_ac:
         row_id += 1
         query = """
             INSERT INTO
-                ac_submisson (id, problem_id, user_id, language)
+                ac_submission (id, problem_id, user_id, language)
             VALUES(
                 %d, '%s', '%s', '%s'
             )
