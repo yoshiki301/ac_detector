@@ -62,7 +62,7 @@ def insert_new_ac(db, new_ac):
         """ % (row_id, submisson[0], submisson[1], submisson[2])
         db.db_manipulate(query=query, commit=True)
 
-if __name__ == "__main__":
+def fetch_new_ac_count():
     db = db_manager.sqlite3manager()
     db.db_create()
     user_ids = fetch_users(db)
@@ -73,4 +73,4 @@ if __name__ == "__main__":
         count_new_ac = len(new_ac)
         insert_new_ac(db, new_ac)
         res[user_id] = count_new_ac
-    print(res)
+    return res
