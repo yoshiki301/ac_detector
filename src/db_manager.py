@@ -2,8 +2,8 @@ import sqlite3
 
 class sqlite3manager():
 
-    def __init__(self):
-        self.conn = sqlite3.connect('database.sqlite3')
+    def __init__(self, db_path='database.sqlite3'):
+        self.conn = sqlite3.connect(db_path)
         self.c = self.conn.cursor()
 
     def db_create(self):

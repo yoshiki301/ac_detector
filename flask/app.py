@@ -5,7 +5,6 @@ from db_manager import sqlite3manager
 from fetch_submission import fetch_users, resister_user
 
 app = Flask(__name__)
-db = sqlite3manager()
 
 @app.route('/', methods=['GET'])
 def get():
@@ -14,6 +13,7 @@ def get():
 
 @app.route('/', methods=['POST'])
 def post():
+    db = sqlite3manager(db_path='../database.sqlite3')
     user_id = request.form['name']
     users = fetch_users(db)
     if user_id in users:
