@@ -17,18 +17,18 @@ def get_ac_submissions(user_id):
             ac_submissions.add(ac_submission)
     return ac_submissions
 
-def fetch_users(db):
+def fetch_ids(db):
     query = """
         SELECT DISTINCT
-            user_id
+            user_id, twitter_id
         FROM
             resister_user
     """
     res = db.db_manipulate(query=query, fetch=True)
-    user_ids = []
+    ret_val = []
     for users in res:
-        user_ids.append(users[0])
-    return user_ids
+        ret_val.append((users[0],users[1]))
+    return ret_val
 
 def detect_new_ac(db, ac_submissions):
     query = """
@@ -62,7 +62,7 @@ def insert_new_ac(db, new_ac):
         """ % (row_id, submisson[0], submisson[1], submisson[2])
         db.db_manipulate(query=query, commit=True)
 
-def resister_user(db, user_id):
+def resister_user(db, user_id, twitter_id, access_token, access_token_secret):
     query = """
         SELECT
             count(*)
@@ -72,19 +72,20 @@ def resister_user(db, user_id):
     row_id = db.db_manipulate(query=query, fetch=True)[0][0] + 1
     query="""
         INSERT INTO
-            resister_user (id, user_id)
-        VALUSE(
-            %d, '%s'
+            resister_user (id, user_id, twitter_id, access_token, access_token_secret)
+        VALUES(
+            %d, '%s', '%s', '%s', '%s'
         )
-    """ % (row_id, user_id)
+    """ % (row_id, user_id, twitter_id, access_token, access_token_secret)
     db.db_manipulate(query=query, commit=True)
 
 if __name__ == "__main__":
     db = db_manager.sqlite3manager()
     db.db_create()
-    user_ids = fetch_users(db)
+    id_pairs = fetch_ids(db)
     res = {}
-    for user_id in user_ids:
+    for ids in id_pairs:
+        user_id = ids[0]
         sub = get_ac_submissions(user_id)
         new_ac = detect_new_ac(db,sub)
         count_new_ac = len(new_ac)

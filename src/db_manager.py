@@ -20,7 +20,10 @@ class sqlite3manager():
         query = """
             CREATE TABLE IF NOT EXISTS resister_user(
                 id integer,
-                user_id string
+                user_id string,
+                twitter_id string,
+                access_token string,
+                access_token_secret string
             )
         """
         self.c.execute(query)
