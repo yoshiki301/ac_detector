@@ -37,7 +37,7 @@ def detect_new_ac(db, ac_submissions):
             user_id,
             language
         FROM
-            ac_submisson
+            ac_submission
     """
     res = set(db.db_manipulate(query=query, fetch=True))
     new_ac = ac_submissions - res
@@ -48,21 +48,21 @@ def insert_new_ac(db, new_ac):
         SELECT
             count(*)
         FROM
-            ac_submisson
+            ac_submission
     """
     row_id = db.db_manipulate(query=query, fetch=True)[0][0]
     for submisson in new_ac:
         row_id += 1
         query = """
             INSERT INTO
-                ac_submisson (id, problem_id, user_id, language)
+                ac_submission (id, problem_id, user_id, language)
             VALUES(
                 %d, '%s', '%s', '%s'
             )
         """ % (row_id, submisson[0], submisson[1], submisson[2])
         db.db_manipulate(query=query, commit=True)
 
-if __name__ == "__main__":
+def fetch_new_ac_count():
     db = db_manager.sqlite3manager()
     db.db_create()
     user_ids = fetch_users(db)
@@ -73,4 +73,13 @@ if __name__ == "__main__":
         count_new_ac = len(new_ac)
         insert_new_ac(db, new_ac)
         res[user_id] = count_new_ac
-    print(res)
+    return res
+def fetch_ac_count():
+    db = db_manager.sqlite3manager()
+    db.db_create()
+    user_ids = fetch_users(db)
+    res = {}
+    for user_id in user_ids:
+        res[user_id] = len(get_ac_submissions(user_id))
+    return res
+        
