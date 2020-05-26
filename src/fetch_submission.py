@@ -79,6 +79,15 @@ def resister_user(db, user_id, twitter_id, access_token, access_token_secret):
     """ % (row_id, user_id, twitter_id, access_token, access_token_secret)
     db.db_manipulate(query=query, commit=True)
 
+def fetch_ac_count():
+    db = db_manager.sqlite3manager()
+    db.db_create()
+    user_ids = fetch_users(db)
+    res = {}
+    for user_id in user_ids:
+        res[user_id] = len(get_ac_submissions(user_id))
+    return res
+
 if __name__ == "__main__":
     db = db_manager.sqlite3manager()
     db.db_create()
@@ -92,13 +101,4 @@ if __name__ == "__main__":
         insert_new_ac(db, new_ac)
         res[user_id] = count_new_ac
     print(res)
-
-def fetch_ac_count():
-    db = db_manager.sqlite3manager()
-    db.db_create()
-    user_ids = fetch_users(db)
-    res = {}
-    for user_id in user_ids:
-        res[user_id] = len(get_ac_submissions(user_id))
-    return res
         
