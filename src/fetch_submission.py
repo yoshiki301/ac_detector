@@ -91,7 +91,8 @@ if __name__ == "__main__":
         count_new_ac = len(new_ac)
         insert_new_ac(db, new_ac)
         res[user_id] = count_new_ac
-    return res
+    print(res)
+
 def fetch_ac_count():
     db = db_manager.sqlite3manager()
     db.db_create()
